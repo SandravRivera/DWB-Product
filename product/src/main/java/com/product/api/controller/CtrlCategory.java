@@ -1,10 +1,12 @@
-package com.product;
+package com.product.api.controller;
+
 import org.springframework.web.bind.annotation.RestController;
+import com.product.api.entity.Category;
 import org.springframework.web.bind.annotation.GetMapping;
 
 
 @RestController
-public class CtrlProduct {
+public class CtrlCategory {
     @GetMapping("/category")
     public Category[] showCategories() {
         Category c1 = new Category(1, "Electrónica", "TECH", 1);
