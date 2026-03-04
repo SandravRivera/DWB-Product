@@ -1,19 +1,21 @@
 package com.product.api.controller;
 
-import org.springframework.web.bind.annotation.RestController;
+import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 import com.product.api.entity.Category;
-import org.springframework.web.bind.annotation.GetMapping;
-
+import com.product.api.service.SvcCategory;
 
 @RestController
+@RequestMapping("/category")
 public class CtrlCategory {
-    @GetMapping("/category")
-    public Category[] showCategories() {
-        Category c1 = new Category(1, "Electrónica", "TECH", 1);
-        Category c2 = new Category(2, "Ropa", "FASHION", 1);
-        Category c3 = new Category(3, "Hogar", "HOME", 1);
 
-        return new Category[]{c1, c2, c3};
+    @Autowired
+    SvcCategory svc;
+
+    @GetMapping
+    public List<Category> getCategories() {
+        return svc.getCategories();
     }
     
 }
