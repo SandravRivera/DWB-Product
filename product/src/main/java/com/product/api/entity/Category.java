@@ -1,10 +1,18 @@
-package com.product;
+package com.product.api.entity;
+import jakarta.persistence.*;
 
+@Entity
+@Table(name="category")
 public class Category {
+    @Id
     private Integer category_id;
     private String category;
     private String tag;
     private Integer status;
+
+    // Para crear una nueva instancia mediante reflexión en el
+    // framework de persistencia sin borrar el otro constructor.
+    protected Category() {}
 
     public Category(Integer category_id, String category, String tag, Integer status) {
         this.category_id = category_id;
