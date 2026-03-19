@@ -1,13 +1,28 @@
 package com.product.api.entity;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import jakarta.persistence.*;
 
 @Entity
 @Table(name="category")
 public class Category {
+    // category_id
     @Id
-    private Integer category_id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonProperty("category_id")    // nombre de la variable de salida
+    @Column(name = "category_id")   // nombre de la columna con la que se mapea
+    private int category_id;
+    // category
+    @JsonProperty("category")
+    @Column(name = "category")
     private String category;
+    // tag
+    @JsonProperty("tag")
+    @Column(name = "tag")
     private String tag;
+    // status
+    @JsonProperty("status")
+    @Column(name = "status")
     private Integer status;
 
     // Para crear una nueva instancia mediante reflexión en el
@@ -29,19 +44,15 @@ public class Category {
     /******************
      * SETTERS
      ******************/
-    
     public void setCategory_id(Integer category_id) {
         this.category_id = category_id;
     }
-    
     public void setCategory(String category) {
         this.category = category;
     }
-    
     public void setTag(String tag) {
         this.tag = tag;
     }
-
     public void setStatus(Integer status) {
         this.status = status;
     }
@@ -49,19 +60,15 @@ public class Category {
     /******************
      * GETTERS
      ******************/
-
     public Integer getCategory_id() {
         return category_id;
     }
-
     public String getCategory() {
         return category;
     }
-
     public String getTag() {
         return tag;
     }
-
     public Integer getStatus() {
         return status;
     }
