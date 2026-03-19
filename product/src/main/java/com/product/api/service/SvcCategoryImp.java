@@ -12,13 +12,21 @@ import com.product.exception.DBAccessException;
 
 import java.util.List;
 
-
+/**
+ * Implementación de la interfaz de servicio para la gestión de categorías.
+ * Contiene la lógica de negocio y el manejo de excepciones de persistencia.
+ */
 @Service
 public class SvcCategoryImp implements SvcCategory {
 
     @Autowired
     RepoCategory repo;
 
+    /**
+     * Recupera todas las categorías registradas.
+     * @return Lista de categorías.
+     * @throws DBAccessException si ocurre un error inesperado en la base de datos.
+     */
     @Override
     public List<Category> findAll() {
         try {
@@ -28,6 +36,11 @@ public class SvcCategoryImp implements SvcCategory {
         }
     }
     
+    /**
+     * Recupera las categorías con estatus activo (1).
+     * @return Lista de categorías activas.
+     * @throws DBAccessException si ocurre un error de acceso a datos.
+     */
     @Override
     public List<Category> findActive() {
         try {
@@ -37,6 +50,10 @@ public class SvcCategoryImp implements SvcCategory {
         }
     }
     
+    /**
+     * Crea una nueva categoría capturando errores de duplicidad.
+     * @param in DTO con la información de la categoría.
+     */
     @Override
     public void create(DtoCategoryIn in) {
         try {
@@ -46,6 +63,11 @@ public class SvcCategoryImp implements SvcCategory {
         }
     }
     
+    /**
+     * Actualiza una categoría existente capturando errores de duplicidad.
+     * @param in DTO con los nuevos datos.
+     * @param id Identificador de la categoría a actualizar.
+     */
     @Override
     public void update(DtoCategoryIn in, Integer id) {
         try {
@@ -55,17 +77,31 @@ public class SvcCategoryImp implements SvcCategory {
         }
     }
     
+    /**
+     * Habilita una categoría en el sistema.
+     * @param id Identificador de la categoría a activar.
+     */
     @Override
     public void enable(Integer id) {
         updateStatus(id, 1);
     }
     
+    /**
+     * Deshabilita una categoría (borrado lógico).
+     * @param id Identificador de la categoría a desactivar.
+     */
     @Override
     public void disable(Integer id) {
         updateStatus(id, 0);
     }
 
-    // private updateStatus()
+    /**
+     * Método privado para realizar la actualización del estatus.
+     * @param id Identificador de la categoría.
+     * @param status Valor del nuevo estatus (0 o 1).
+     * @throws ApiException 404 si el ID no existe.
+     * @throws DBAccessException si ocurre un error de acceso a datos.
+     */
     private void updateStatus(Integer id, Integer status) {
         try {
             if(repo.findById(id).isEmpty())
@@ -76,6 +112,11 @@ public class SvcCategoryImp implements SvcCategory {
         }
     }
 
+    /**
+     * Analiza las excepciones de base de datos para identificar violaciones de valores únicos.
+     * @param e Excepción de acceso a datos capturada.
+     * @throws ApiException 409 CONFLICT si se detecta un duplicado en categoría o tag.
+     */
     private void manageDAE(DataAccessException e) {
         String msg = e.getMostSpecificCause().getMessage();
         if(msg.contains("category.category"))
