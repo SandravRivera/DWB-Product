@@ -71,6 +71,7 @@ public class SvcCategoryImp implements SvcCategory {
     @Override
     public void update(DtoCategoryIn in, Integer id) {
         try {
+            validateID(id);
             repo.update(id, in.getCategory(), in.getTag());
         } catch (DataAccessException e) {
             manageDAE(e);
@@ -104,12 +105,21 @@ public class SvcCategoryImp implements SvcCategory {
      */
     private void updateStatus(Integer id, Integer status) {
         try {
-            if(repo.findById(id).isEmpty())
-                throw new ApiException(HttpStatus.NOT_FOUND, "El id de la categoría no existe");
+            validateID(id);
             repo.updateStatus(id, status);
         } catch (DataAccessException e) {
             throw new DBAccessException(e);
         }
+    }
+
+    /**
+     * Verifica si el identificador proporcionado existe en la base de datos.
+     * @param id Identificador de la categoría.
+     * @throws ApiException 404 NOT FOUND si el ID no existe.
+     */
+    private void validateID(Integer id) {
+        if(repo.findById(id).isEmpty())
+            throw new ApiException(HttpStatus.NOT_FOUND, "El id de la categoría no existe");
     }
 
     /**
