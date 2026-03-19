@@ -42,10 +42,7 @@ public class SvcCategoryImp implements SvcCategory {
         try {
             repo.create(in.getCategory(), in.getTag());
         } catch (DataAccessException e) {
-            if(e.getLocalizedMessage().contains("ux_category"))
-                throw new ApiException(HttpStatus.CONFLICT, "El nombre de la categoría ya está registrado");
-            if(e.getLocalizedMessage().contains("ux_tag"))
-                throw new ApiException(HttpStatus.CONFLICT, "El tag de la categoría ya está registrado");
+            manageDAE(e);
         }
     }
     
@@ -54,38 +51,36 @@ public class SvcCategoryImp implements SvcCategory {
         try {
             repo.update(id, in.getCategory(), in.getTag());
         } catch (DataAccessException e) {
-            validateId(id);
-            if(e.getLocalizedMessage().contains("ux_category"))
-                throw new ApiException(HttpStatus.CONFLICT, "El nombre de la categoría ya está registrado");
-            if(e.getLocalizedMessage().contains("ux_tag"))
-                throw new ApiException(HttpStatus.CONFLICT, "El tag de la categoría ya está registrado");
-            throw new DBAccessException(e);
+            manageDAE(e);
         }
     }
     
     @Override
     public void enable(Integer id) {
-        try {
-            repo.updateStatus(id, 1);
-        } catch (DataAccessException e) {
-            validateId(id);
-            throw new DBAccessException(e);
-        }
+        updateStatus(id, 1);
     }
     
     @Override
     public void disable(Integer id) {
+        updateStatus(id, 0);
+    }
+
+    // private updateStatus()
+    private void updateStatus(Integer id, Integer status) {
         try {
-            repo.updateStatus(id, 0);
+            if(repo.findById(id).isEmpty())
+                throw new ApiException(HttpStatus.NOT_FOUND, "El id de la categoría no existe");
+            repo.updateStatus(id, status);
         } catch (DataAccessException e) {
-            validateId(id);
             throw new DBAccessException(e);
         }
     }
 
-    // private validate()
-    private void validateId(Integer id) {
-        if(repo.findById(id).isEmpty())
-            throw new ApiException(HttpStatus.NOT_FOUND, "El id de la categoría no existe");
+    private void manageDAE(DataAccessException e) {
+        String msg = e.getMostSpecificCause().getMessage();
+        if(msg.contains("category.category"))
+            throw new ApiException(HttpStatus.CONFLICT, "El nombre de la categoría ya está registrado");
+        if(msg.contains("category.tag"))
+            throw new ApiException(HttpStatus.CONFLICT, "El tag de la categoría ya está registrado");
     }
 }

@@ -29,39 +29,34 @@ public class CtrlCategory {
     }
 
     @PostMapping
-    public ResponseEntity<Void> create(@Valid @RequestBody DtoCategoryIn in) {
+    public ResponseEntity<String> create(@Valid @RequestBody DtoCategoryIn in) {
         svc.create(in); 
-        System.out.println("La categoría ha sido registrada");
-        System.out.println("Categoría: "+ in.getCategory());
-        System.out.println("Tag: "+ in.getTag());
-        return ResponseEntity.ok().build();
+        String msg = "La categoría ha sido registrada"+
+            "\nCategoría: " + in.getCategory()+ 
+            "\nTag: "+ in.getTag();
+        return ResponseEntity.ok(msg);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<String> update(@Valid @RequestBody DtoCategoryIn in, 
         @PathVariable Integer id) {
         svc.update(in, id);
-        System.out.println("La categoría ha sido actualizada");
-        System.out.println("Categoría: "+ in.getCategory());
-        System.out.println("Tag: "+ in.getTag());
-        return ResponseEntity.ok().build();
-
+        String msg = "La categoría ha sido actualizada"+
+            "\nCategoría: " + in.getCategory()+ 
+            "\nTag: "+ in.getTag();
+        return ResponseEntity.ok(msg);
     }
 
     @PatchMapping("/{id}/enable")
-    public ResponseEntity<Void> enable(@PathVariable Integer id) {
+    public ResponseEntity<String> enable(@PathVariable Integer id) {
         svc.enable(id);
-        System.out.println("La categoría ha sido activada");
-        System.out.println("ID: "+ id);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok("La categoría con id "+id+" ha sido activada");
     }
 
     @PatchMapping("/{id}/disable")
-    public ResponseEntity<Void> disable(@PathVariable Integer id) {
+    public ResponseEntity<String> disable(@PathVariable Integer id) {
         svc.disable(id);
-        System.out.println("La categoría ha sido desactivada");
-        System.out.println("ID: "+ id);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok("La categoría con id "+id+" ha sido desactivada");
     }
     
 }
