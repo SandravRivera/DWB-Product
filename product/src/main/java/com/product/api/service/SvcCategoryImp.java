@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import com.product.api.dto.DtoCategoryIn;
 import com.product.api.entity.Category;
 import com.product.api.repository.RepoCategory;
-import com.product.exception.ApiException;
 import com.product.exception.DBAccessException;
 
 import java.util.List;
@@ -74,7 +73,8 @@ public class SvcCategoryImp implements SvcCategory {
             validateID(id);
             repo.update(id, in.getCategory(), in.getTag());
         } catch (DataAccessException e) {
-            manageDAE(e);
+            // Lanzar excepción personalizada si la BD no tiene tablas
+            throw new DBAccessException(e);
         }
     }
     
