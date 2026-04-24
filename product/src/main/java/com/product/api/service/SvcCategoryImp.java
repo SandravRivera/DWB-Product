@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import com.product.api.dto.DtoCategoryIn;
 import com.product.api.entity.Category;
 import com.product.api.repository.RepoCategory;
+import com.product.exception.ApiException;
 import com.product.exception.DBAccessException;
 
 import java.util.List;
