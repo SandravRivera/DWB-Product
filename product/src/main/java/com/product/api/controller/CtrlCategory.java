@@ -12,6 +12,8 @@ import com.product.api.service.SvcCategory;
 import com.product.exception.ApiException;
 import com.product.exception.DBAccessException;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
 /**
@@ -23,6 +25,7 @@ import jakarta.validation.Valid;
  */
 @RestController
 @RequestMapping("/category")
+@Tag(name = "Category", description = "Catálogo de categorías")
 public class CtrlCategory {
 
     @Autowired
@@ -35,6 +38,7 @@ public class CtrlCategory {
      * @throws DBAccessException si ocurre un error inesperado en la base de datos.
      */
     @GetMapping
+    @Operation(summary = "Consultar categorías", description = "Lista las categorías registradas en el sistema")
     public ResponseEntity<List<Category>> findAll() {
         return ResponseEntity.ok(svc.findAll());
     }
@@ -45,6 +49,7 @@ public class CtrlCategory {
      * Status: 200 OK.
      * @throws DBAccessException si ocurre un error de acceso a datos.
      */
+    @Operation(summary = "Consultar categorías activas", description = "Lista las categorías activas en el sistema")
     @GetMapping("/active")
     public ResponseEntity<List<Category>> findActive() {
         return ResponseEntity.ok(svc.findActive());
@@ -59,6 +64,7 @@ public class CtrlCategory {
      * @throws MethodArgumentNotValidException 400 BAD REQUEST si los datos de entrada son inválidos.
      */
     @PostMapping
+    @Operation(summary = "Registrar categoría", description = "Registra una nueva categoría en el sistema")
     public ResponseEntity<String> create(@Valid @RequestBody DtoCategoryIn in) {
         svc.create(in); 
         String msg = "La categoría ha sido registrada"+
@@ -77,6 +83,7 @@ public class CtrlCategory {
      * @throws ApiException 409 CONFLICT si los nuevos datos violan restricciones de unicidad.
      */
     @PutMapping("/{id}")
+    @Operation(summary = "Actualizar categoría", description = "Actualiza los datos de una categoría existente")
     public ResponseEntity<String> update(@Valid @RequestBody DtoCategoryIn in, 
         @PathVariable Integer id) {
         svc.update(in, id);
@@ -94,6 +101,7 @@ public class CtrlCategory {
      * @throws ApiException 404 NOT FOUND si el ID no existe.
      */
     @PatchMapping("/{id}/enable")
+    @Operation(summary = "Activar categoría", description = "Activa una categoría específica")
     public ResponseEntity<String> enable(@PathVariable Integer id) {
         svc.enable(id);
         return ResponseEntity.ok("La categoría con id "+id+" ha sido activada");
@@ -107,6 +115,7 @@ public class CtrlCategory {
      * @throws ApiException 404 NOT FOUND si el ID no existe.
      */
     @PatchMapping("/{id}/disable")
+    @Operation(summary = "Desactivar categoría", description = "Desactiva una categoría específica")
     public ResponseEntity<String> disable(@PathVariable Integer id) {
         svc.disable(id);
         return ResponseEntity.ok("La categoría con id "+id+" ha sido desactivada");
