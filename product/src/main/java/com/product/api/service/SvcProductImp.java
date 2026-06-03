@@ -16,11 +16,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.product.api.dto.in.DtoProductIn;
-import com.product.api.dto.out.DtoProductImageOut;
 import com.product.api.dto.out.DtoProductListOut;
 import com.product.api.dto.out.DtoProductOut;
+import com.product.api.entity.Category;
 import com.product.api.entity.Product;
 import com.product.api.entity.ProductImage;
+import com.product.api.repository.RepoCategory;
 import com.product.api.repository.RepoProduct;
 import com.product.api.repository.RepoProductImage;
 import com.product.common.mapper.MapperProduct;
@@ -39,8 +40,14 @@ public class SvcProductImp implements SvcProduct{
 	@Autowired
 	MapperProduct mapper;
 
+	@Autowired
+	RepoCategory repoCategory;
+
 	@Value("${app.upload.dir}")
-    private String uploadDir;
+	private String uploadDir; 
+
+	@Value("${app.upload.images}")
+	private String uploadImages;
 
 	@Override
 	public ResponseEntity<List<DtoProductListOut>> getProducts() {
@@ -55,13 +62,35 @@ public class SvcProductImp implements SvcProduct{
 	@Override
 	public ResponseEntity<DtoProductOut> getProduct(Integer id) {
 		try {
+			// Verificar que el producto existe
 			validateProductId(id);
-			DtoProductOut product = repo.getProduct(id);
+		
+			// Obtener la entidad Product real directamente del repositorio modificado
+			Product product = repo.getProduct(id);
 			if(product == null)
-				throw new ApiException(HttpStatus.NOT_FOUND, "El id del cliente no existe");
-            List<String> imagesBase64 = readProductImagesFiles(id);
-            product.setImages(imagesBase64);
-			return new ResponseEntity<>(product, HttpStatus.OK);
+				throw new ApiException(HttpStatus.NOT_FOUND, "El id del producto no existe");
+			
+			// Mapear Product a DtoProductOut
+			DtoProductOut productDto = new DtoProductOut();
+			productDto.setProduct_id(product.getProduct_id());
+			productDto.setGtin(product.getGtin());
+			productDto.setProduct(product.getProduct());
+			productDto.setDescription(product.getDescription());
+			productDto.setPrice(product.getPrice());
+			productDto.setStock(product.getStock());
+			
+			// Obtener el nombre de la categoría (optional) y registrarlo
+			Category category = repoCategory.findById(product.getCategory_id())
+            	.orElseThrow(() -> new ApiException(HttpStatus.NOT_FOUND, "El id de categoría no existe"));
+        	productDto.setCategory(category.getCategory());
+			
+			// Leer y adjuntar los archivos de imágenes en Base64
+			List<String> imagesBase64 = readProductImagesFiles(id);
+			productDto.setImages(imagesBase64);
+			
+			// Devolver DTO
+			return new ResponseEntity<>(productDto, HttpStatus.OK);
+
 		}catch (DataAccessException e) {
 			throw new DBAccessException(e);
 		}
@@ -143,19 +172,19 @@ public class SvcProductImp implements SvcProduct{
 	private List<String> readProductImagesFiles(Integer product_id) {
 		try {
 			// Obtener imágenes
-			List<DtoProductImageOut> productImages = repoProductImage.findByProductId(product_id);
+			List<ProductImage> productImages = repoProductImage.findByProductId(product_id);
 			// No hay imágenes, arreglo vacío
 			if(productImages == null || productImages.size() == 0)
 				return new ArrayList<>();
 			// Almacenar imágenes codificadas en Base64
 			List<String> imagesUrl = new ArrayList<>();
-			for(DtoProductImageOut productImage : productImages) {
+			for(ProductImage productImage : productImages) {
 				String imageUrl = productImage.getImage();
 				// Si la URL comienza con "/" la eliminamos para obtener la relativa
                 if (imageUrl.startsWith("/")) 
                         imageUrl = imageUrl.substring(1);
                 // Construir el Path
-                Path imagePath = Paths.get(uploadDir, imageUrl);
+				Path imagePath = Paths.get(uploadDir, uploadImages, imageUrl);
                 // Verifica que el archivo exista
                 if (!Files.exists(imagePath)) 
 					continue; // No existe, no se guarda

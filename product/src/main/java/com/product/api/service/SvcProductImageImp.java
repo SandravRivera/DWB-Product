@@ -17,11 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.product.api.dto.in.DtoProductImageIn;
-import com.product.api.dto.in.DtoProductIn;
 import com.product.api.dto.out.DtoProductImageOut;
-import com.product.api.dto.out.DtoProductListOut;
-import com.product.api.dto.out.DtoProductOut;
-import com.product.api.entity.Product;
 import com.product.api.entity.ProductImage;
 import com.product.api.repository.RepoProduct;
 import com.product.api.repository.RepoProductImage;
@@ -50,8 +46,26 @@ public class SvcProductImageImp implements SvcProductImage {
 	@Override
 	public ResponseEntity<List<DtoProductImageOut>> getProductImages(Integer productId){
 		try {
+			// Verificar que el producto existe
 			validateProductId(productId);
-			return new ResponseEntity<>(repoImage.findByProductId(productId), HttpStatus.OK);
+
+			// Obtener las imágenes de la base de datos
+			List<ProductImage> images = repoImage.findByProductId(productId);
+			
+			// Mapear ProductImage a DtoProductImageOut
+			List<DtoProductImageOut> dtos = new ArrayList<>();
+			for (ProductImage img : images) {
+				DtoProductImageOut dto = new DtoProductImageOut();
+				dto.setProductImageId(img.getProductImageId());
+				dto.setProductId(img.getProductId());
+				dto.setImage(img.getImage());
+				dto.setStatus(img.getStatus());
+				dtos.add(dto);
+			}
+			
+			// Devolver DTOs
+			return new ResponseEntity<>(dtos, HttpStatus.OK);
+
 		}catch (DataAccessException e) {
 			throw new DBAccessException(e);
 		}

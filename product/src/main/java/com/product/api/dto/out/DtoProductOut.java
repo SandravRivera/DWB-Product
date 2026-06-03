@@ -14,7 +14,7 @@ public class DtoProductOut {
     private String description;
     private Float price;
     private Integer stock;
-    private String categoy;
+    private String category;
     
 
     public Integer getProduct_id() {
@@ -65,12 +65,12 @@ public class DtoProductOut {
         this.stock = stock;
     }
 
-    public String getCategoy() {
-        return categoy;
+    public String getCategory() {
+        return category;
     }
 
-    public void setCategoy(String categoy) {
-        this.categoy = categoy;
+    public void setCategory(String category) {
+        this.category = category;
     }
 
     public List<String> getImages() {
