@@ -20,7 +20,7 @@ public class SecurityConfig {
     private JwtAuthFilter jwtFilter;
 
     // Cambiar si los roles tienen otro nombre
-    String ADMIN = "Administrator", COSTUMER = "User";
+    String ADMIN = "Administrator", CUSTOMER = "User";
     
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http, CorsConfig corsConfig) throws Exception {
@@ -31,8 +31,8 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 .requestMatchers("/error", "/swagger-ui/**", "/v3/api-docs/**", "/actuator/info", "/actuator/health").permitAll()
                 // El cliente puede ver las categorías activas, los detalles de un producto y sus imágenes
-				.requestMatchers(HttpMethod.GET, "/category/active").hasAnyAuthority(ADMIN, COSTUMER)
-				.requestMatchers(HttpMethod.GET, "/product/{id}", "/product/{id}/**").hasAnyAuthority(ADMIN, COSTUMER)
+				.requestMatchers(HttpMethod.GET, "/category/active").hasAnyAuthority(ADMIN, CUSTOMER)
+				.requestMatchers(HttpMethod.GET, "/product/{id}", "/product/{id}/**").hasAnyAuthority(ADMIN, CUSTOMER)
 				// El administrador tiene permisos para todo
 				.requestMatchers("/category", "/category/**").hasAuthority(ADMIN)
 				.requestMatchers("/product", "/product/**").hasAuthority(ADMIN)
