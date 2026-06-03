@@ -32,10 +32,10 @@ public class SecurityConfig {
                 .requestMatchers("/error", "/swagger-ui/**", "/v3/api-docs/**", "/actuator/info", "/actuator/health").permitAll()
                 // El cliente puede ver las categorías activas, los detalles de un producto y sus imágenes
 				.requestMatchers(HttpMethod.GET, "/category/active").hasAnyAuthority(ADMIN, COSTUMER)
-				.requestMatchers(HttpMethod.GET, "/product/{id}/**").hasAnyAuthority(ADMIN, COSTUMER)
+				.requestMatchers(HttpMethod.GET, "/product/{id}", "/product/{id}/**").hasAnyAuthority(ADMIN, COSTUMER)
 				// El administrador tiene permisos para todo
-				.requestMatchers("/category/**").hasAuthority(ADMIN)
-				.requestMatchers("/product/**").hasAuthority(ADMIN)
+				.requestMatchers("/category", "/category/**").hasAuthority(ADMIN)
+				.requestMatchers("/product", "/product/**").hasAuthority(ADMIN)
                 .anyRequest().authenticated()
                 )
         .cors(cors -> cors.configurationSource(corsConfig))
