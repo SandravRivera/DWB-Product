@@ -44,10 +44,10 @@ public class SvcCartItemImp implements SvcCartItem {
 			Integer userId = jwtDecoder.getUserId();
 			CartItem item = repo.findByProductIdAndUserId(product.getProduct_id(), userId);
 			// Si existe actualizar, si no crear
-			if(item != null) item.setNumber(item.getNumber() + in.getNumber());
+			if(item != null) item.setQuantity(item.getQuantity() + in.getQuantity());
 			else item = mapper.fromDto(in, userId);
 			// Verificar si hay productos suficientes
-			if(product.getStock() < item.getNumber()) {
+			if(product.getStock() < item.getQuantity()) {
 				throw new ApiException(HttpStatus.CONFLICT, "No hay suficientes productos disponibles");
 			}
 			// Guardar y mandar mensaje de éxito

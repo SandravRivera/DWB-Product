@@ -24,13 +24,13 @@ public class DtoCartItemIn {
     
     /**
      * Cantidad de unidades del producto que se está comprando.
-     * Mapeado desde el campo JSON "number".
+     * Mapeado desde el campo JSON "quantity".
      * Restricción: No puede ser nulo ni menor a uno.
      */
-    @JsonProperty("number")
+    @JsonProperty("quantity")
     @Min(value = 1)
-    @NotNull(message = "Es obligatorio ingresar el number")
-    private Integer number;
+    @NotNull(message = "Es obligatorio ingresar el quantity")
+    private Integer quantity;
 
 
     /******************
@@ -41,8 +41,8 @@ public class DtoCartItemIn {
         return productId;
     }
 
-    public Integer getNumber() {
-        return number;
+    public Integer getQuantity() {
+        return quantity;
     }
 
 
@@ -54,8 +54,8 @@ public class DtoCartItemIn {
         this.productId = productId;
     }
 
-    public void setNumber(Integer number) {
-        this.number = number;
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
     }
 
 }

@@ -34,10 +34,10 @@ public class DtoCartItemOut {
      * Cantidad de unidades del producto que se está comprando.
      * Restricción: No puede ser nulo ni menor a cero.
      */
-    @JsonProperty("number")
+    @JsonProperty("quantity")
     @Min(value = 0)
-    @NotNull(message = "Es obligatorio mostrar el number")
-    private Integer number;
+    @NotNull(message = "Es obligatorio mostrar el quantity")
+    private Integer quantity;
     
     
     /**
@@ -49,11 +49,11 @@ public class DtoCartItemOut {
     @NotNull(message = "Es obligatorio mostrar el price")
     private Float price;
 
-    public DtoCartItemOut(Integer cartItemId, Integer productId, Integer number, Float price) {
+    public DtoCartItemOut(Integer cartItemId, Integer productId, Integer quantity, Float price) {
         super();
         this.cartItemId = cartItemId;
         this.productId = productId;
-        this.number = number;
+        this.quantity = quantity;
         this.price = price;
     }
 
@@ -69,8 +69,8 @@ public class DtoCartItemOut {
         return productId;
     }
 
-    public Integer getNumber() {
-        return number;
+    public Integer getQuantity() {
+        return quantity;
     }
 
     public Float getPrice() {
@@ -90,8 +90,8 @@ public class DtoCartItemOut {
         this.productId = productId;
     }
 
-    public void setNumber(Integer number) {
-        this.number = number;
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
     }
 
     public void setPrice(Float price) {

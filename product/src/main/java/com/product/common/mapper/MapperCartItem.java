@@ -1,8 +1,5 @@
 package com.product.common.mapper;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.springframework.stereotype.Service;
 
 import com.product.api.dto.in.DtoCartItemIn;
@@ -16,7 +13,7 @@ public class MapperCartItem {
 		DtoCartItemOut dto = new DtoCartItemOut(
 			item.getCartItemId(),
 			item.getProductId(),
-			item.getNumber(),
+			item.getQuantity(),
 			price
 		);
 		return dto;
@@ -27,7 +24,7 @@ public class MapperCartItem {
 		CartItem item = new CartItem();
 		item.setUserId(userId);
 		item.setProductId(dto.getProductId());
-		item.setNumber(dto.getNumber());
+		item.setQuantity(dto.getQuantity());
         return item;
 	}
 

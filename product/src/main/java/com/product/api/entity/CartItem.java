@@ -39,21 +39,21 @@ public class CartItem {
     /**
      * Cantidad del producto que se está comprando.
      */
-    @JsonProperty("number")
-    @Column(name = "number")
-    private Integer number;
+    @JsonProperty("quantity")
+    @Column(name = "quantity")
+    private Integer quantity;
 
     
 
     public CartItem() {
     }
 
-    public CartItem(Integer cartItemId, Integer userId, Integer productId, Integer number) {
+    public CartItem(Integer cartItemId, Integer userId, Integer productId, Integer quantity) {
         super();
         this.cartItemId = cartItemId;
         this.userId = userId;
         this.productId = productId;
-        this.number = number;
+        this.quantity = quantity;
     }
 
     /******************
@@ -72,8 +72,8 @@ public class CartItem {
         return productId;
     }
 
-    public Integer getNumber() {
-        return number;
+    public Integer getQuantity() {
+        return quantity;
     }
 
 
@@ -93,7 +93,7 @@ public class CartItem {
         this.productId = productId;
     }
 
-    public void setNumber(Integer number) {
-        this.number = number;
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
     }
 }
