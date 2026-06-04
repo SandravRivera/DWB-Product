@@ -33,6 +33,7 @@ public class SecurityConfig {
                 // El cliente puede ver las categorías activas, los detalles de un producto y sus imágenes
 				.requestMatchers(HttpMethod.GET, "/category/active").hasAnyAuthority(ADMIN, CUSTOMER)
 				.requestMatchers(HttpMethod.GET, "/product/{id}", "/product/{id}/**").hasAnyAuthority(ADMIN, CUSTOMER)
+                .requestMatchers("/cart-item", "/cart-item/**").hasAnyAuthority(ADMIN, CUSTOMER)
 				// El administrador tiene permisos para todo
 				.requestMatchers("/category", "/category/**").hasAuthority(ADMIN)
 				.requestMatchers("/product", "/product/**").hasAuthority(ADMIN)

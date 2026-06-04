@@ -20,7 +20,7 @@ public class DtoCartItemIn {
      */
     @JsonProperty("product_id")
     @NotNull(message = "Es obligatorio ingresar el product_id")
-    private Integer cartItemId;
+    private Integer productId;
     
     /**
      * Cantidad de unidades del producto que se está comprando.
@@ -37,8 +37,8 @@ public class DtoCartItemIn {
      * GETTERS
      ******************/
 
-    public Integer getCartItemId() {
-        return cartItemId;
+    public Integer getProductId() {
+        return productId;
     }
 
     public Integer getNumber() {
@@ -50,8 +50,8 @@ public class DtoCartItemIn {
      * SETTERS
      ******************/
 
-    public void setCartItemId(Integer cartItemId) {
-        this.cartItemId = cartItemId;
+    public void setProductId(Integer productId) {
+        this.productId = productId;
     }
 
     public void setNumber(Integer number) {

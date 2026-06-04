@@ -43,6 +43,18 @@ public class CartItem {
     @Column(name = "number")
     private Integer number;
 
+    
+
+    public CartItem() {
+    }
+
+    public CartItem(Integer cartItemId, Integer userId, Integer productId, Integer number) {
+        super();
+        this.cartItemId = cartItemId;
+        this.userId = userId;
+        this.productId = productId;
+        this.number = number;
+    }
 
     /******************
      * GETTERS
