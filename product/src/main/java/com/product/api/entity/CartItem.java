@@ -32,9 +32,9 @@ public class CartItem {
     /**
      * Identificador del producto que se está comprando.
      */
-    @JsonProperty("product_id")
-    @Column(name = "product_id")
-    private Integer productId;
+    @JsonProperty("gtin")
+    @Column(name = "gtin")
+    private String gtin;
 
     /**
      * Cantidad del producto que se está comprando.
@@ -48,11 +48,11 @@ public class CartItem {
     public CartItem() {
     }
 
-    public CartItem(Integer cartItemId, Integer userId, Integer productId, Integer quantity) {
+    public CartItem(Integer cartItemId, Integer userId, String gtin, Integer quantity) {
         super();
         this.cartItemId = cartItemId;
         this.userId = userId;
-        this.productId = productId;
+        this.gtin = gtin;
         this.quantity = quantity;
     }
 
@@ -68,8 +68,8 @@ public class CartItem {
         return userId;
     }
 
-    public Integer getProductId() {
-        return productId;
+    public String getGtin() {
+        return gtin;
     }
 
     public Integer getQuantity() {
@@ -89,8 +89,8 @@ public class CartItem {
         this.userId = userId;
     }
 
-    public void setProductId(Integer productId) {
-        this.productId = productId;
+    public void setGtin(String gtin) {
+        this.gtin = gtin;
     }
 
     public void setQuantity(Integer quantity) {

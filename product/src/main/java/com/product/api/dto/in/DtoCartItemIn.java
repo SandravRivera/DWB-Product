@@ -14,13 +14,13 @@ import jakarta.validation.constraints.NotNull;
 public class DtoCartItemIn {
     
     /**
-     * Identificador del producto a agregar.
-     * Mapeado desde el campo JSON "product_id".
+     * GTIN del producto a agregar.
+     * Mapeado desde el campo JSON "gtin".
      * Restricción: No puede ser nulo.
      */
-    @JsonProperty("product_id")
-    @NotNull(message = "Es obligatorio ingresar el product_id")
-    private Integer productId;
+    @JsonProperty("gtin")
+    @NotNull(message = "Es obligatorio ingresar el gtin")
+    private String gtin;
     
     /**
      * Cantidad de unidades del producto que se está comprando.
@@ -37,8 +37,8 @@ public class DtoCartItemIn {
      * GETTERS
      ******************/
 
-    public Integer getProductId() {
-        return productId;
+    public String getGtin() {
+        return gtin;
     }
 
     public Integer getQuantity() {
@@ -50,8 +50,8 @@ public class DtoCartItemIn {
      * SETTERS
      ******************/
 
-    public void setProductId(Integer productId) {
-        this.productId = productId;
+    public void setGtin(String gtin) {
+        this.gtin = gtin;
     }
 
     public void setQuantity(Integer quantity) {

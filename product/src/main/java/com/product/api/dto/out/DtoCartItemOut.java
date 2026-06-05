@@ -22,12 +22,12 @@ public class DtoCartItemOut {
     
     
     /**
-     * Identificador del producto que se está comprando.
+     * GTIN del producto que se está comprando.
      * Restricción: No puede ser nulo.
      */
-    @JsonProperty("product_id")
-    @NotNull(message = "Es obligatorio mostrar el product_id")
-    private Integer productId;
+    @JsonProperty("gtin")
+    @NotNull(message = "Es obligatorio mostrar el gtin")
+    private String gtin;
     
     
     /**
@@ -49,10 +49,10 @@ public class DtoCartItemOut {
     @NotNull(message = "Es obligatorio mostrar el price")
     private Float price;
 
-    public DtoCartItemOut(Integer cartItemId, Integer productId, Integer quantity, Float price) {
+    public DtoCartItemOut(Integer cartItemId, String gtin, Integer quantity, Float price) {
         super();
         this.cartItemId = cartItemId;
-        this.productId = productId;
+        this.gtin = gtin;
         this.quantity = quantity;
         this.price = price;
     }
@@ -65,8 +65,8 @@ public class DtoCartItemOut {
         return cartItemId;
     }
 
-    public Integer getProductId() {
-        return productId;
+    public String getGtin() {
+        return gtin;
     }
 
     public Integer getQuantity() {
@@ -86,8 +86,8 @@ public class DtoCartItemOut {
         this.cartItemId = cartItemId;
     }
 
-    public void setProductId(Integer productId) {
-        this.productId = productId;
+    public void setGtin(String gtin) {
+        this.gtin = gtin;
     }
 
     public void setQuantity(Integer quantity) {

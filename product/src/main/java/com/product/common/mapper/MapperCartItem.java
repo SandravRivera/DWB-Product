@@ -12,7 +12,7 @@ public class MapperCartItem {
 	public DtoCartItemOut fromCartItem(CartItem item, float price){
 		DtoCartItemOut dto = new DtoCartItemOut(
 			item.getCartItemId(),
-			item.getProductId(),
+			item.getGtin(),
 			item.getQuantity(),
 			price
 		);
@@ -23,7 +23,7 @@ public class MapperCartItem {
 	public CartItem fromDto(DtoCartItemIn dto, Integer userId) {
 		CartItem item = new CartItem();
 		item.setUserId(userId);
-		item.setProductId(dto.getProductId());
+		item.setGtin(dto.getGtin());
 		item.setQuantity(dto.getQuantity());
         return item;
 	}

@@ -38,11 +38,11 @@ public class SvcCartItemImp implements SvcCartItem {
 	public ResponseEntity<String> addCartItem(DtoCartItemIn in) {
 		try {
 			// Validar existencia del producto
-			Product product = repoProduct.findById(in.getProductId())
+			Product product = repoProduct.findByGtin(in.getGtin())
             	.orElseThrow(() -> new ApiException(HttpStatus.NOT_FOUND, "El producto no existe"));
 			// Buscar producto en el carrito actual
 			Integer userId = jwtDecoder.getUserId();
-			CartItem item = repo.findByProductIdAndUserId(product.getProduct_id(), userId);
+			CartItem item = repo.findByGtinAndUserId(product.getGtin(), userId);
 			// Si existe actualizar, si no crear
 			if(item != null) item.setQuantity(item.getQuantity() + in.getQuantity());
 			else item = mapper.fromDto(in, userId);
@@ -66,7 +66,7 @@ public class SvcCartItemImp implements SvcCartItem {
             // Mapearlos a DTO de salida
             List<DtoCartItemOut> list = new ArrayList<>();
             for(CartItem item: cartItems) {
-                Float price = repoProduct.getProduct(item.getProductId()).getPrice();
+                Float price = repoProduct.findByGtin(item.getGtin()).get().getPrice();
 			    list.add(mapper.fromCartItem(item, price));
             }
             // Regresar lista de DTOs

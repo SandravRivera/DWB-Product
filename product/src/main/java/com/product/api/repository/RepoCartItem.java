@@ -22,12 +22,12 @@ public interface RepoCartItem extends JpaRepository<CartItem, Integer> {
 
     // Obtener un artículo por su ID
     Optional<CartItem> findById(Integer id);
-    CartItem findByProductIdAndUserId(Integer productId, Integer userId);
+    CartItem findByGtinAndUserId(String gtin, Integer userId);
 
     // Eliminar un solo producto
     @Transactional
     @Modifying
-    void deleteByProductIdAndUserId(Integer productId, Integer userId);
+    void deleteByGtinAndUserId(String gtin, Integer userId);
 
     // Eliminar todo
     @Transactional
