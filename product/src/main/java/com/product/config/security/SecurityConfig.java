@@ -30,13 +30,17 @@ public class SecurityConfig {
                 auth -> auth
                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 .requestMatchers("/error", "/swagger-ui/**", "/v3/api-docs/**", "/actuator/info", "/actuator/health").permitAll()
-                // El cliente puede ver las categorías activas, los detalles de un producto y sus imágenes
+                // El cliente puede ver las categorías activas
 				.requestMatchers(HttpMethod.GET, "/category/active").hasAnyAuthority(ADMIN, CUSTOMER)
-				.requestMatchers(HttpMethod.GET, "/product/{id}", "/product/{id}/**").hasAnyAuthority(ADMIN, CUSTOMER)
-                .requestMatchers("/cart-item", "/cart-item/**").hasAnyAuthority(ADMIN, CUSTOMER)
-				// El administrador tiene permisos para todo
 				.requestMatchers("/category", "/category/**").hasAuthority(ADMIN)
+                // El cliente puede ver los detalles de un producto y sus imágenes
+				.requestMatchers(HttpMethod.GET, "/product/{id}", "/product/{id}/**").hasAnyAuthority(ADMIN, CUSTOMER)
 				.requestMatchers("/product", "/product/**").hasAuthority(ADMIN)
+                // Solo el usuario tiene carrito de compras
+				.requestMatchers("/cart-item", "/cart-item/**").hasAuthority(CUSTOMER)
+                // Solo el usuario puede generar facturas, el administrador puede ver todas
+				.requestMatchers(HttpMethod.GET, "/invoice/**").hasAnyAuthority(ADMIN, CUSTOMER)
+				.requestMatchers(HttpMethod.POST,"/invoice").hasAuthority(CUSTOMER)
                 .anyRequest().authenticated()
                 )
         .cors(cors -> cors.configurationSource(corsConfig))
